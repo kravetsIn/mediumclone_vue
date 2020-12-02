@@ -13,18 +13,33 @@
           <!-- Validation Errors-->
           <form @submit.prevent="onSubmit">
             <fieldset class="form-group">
-              <input class="form-control form-control-lg" type="text" placeholder="Username"/>
+              <input class="form-control form-control-lg"
+                     type="text"
+                     placeholder="Username"
+                     v-model="username"
+              />
             </fieldset>
 
             <fieldset class="form-group">
-              <input class="form-control form-control-lg" type="email" placeholder="Email"/>
+              <input class="form-control form-control-lg"
+                     type="email"
+                     placeholder="Email"
+                     v-model="email"
+              />
             </fieldset>
 
             <fieldset class="form-group">
-              <input class="form-control form-control-lg" type="password" placeholder="Password"/>
+              <input class="form-control form-control-lg"
+                     type="password"
+                     placeholder="Password"
+                     v-model="password"
+              />
             </fieldset>
 
-            <button class="btn btn-lg btn-primary pull-xs-right" type="submit">
+            <button class="btn btn-lg btn-primary pull-xs-right"
+                    type="submit"
+                    :disabled="isSubmit"
+            >
               Sign up
             </button>
           </form>
@@ -37,11 +52,31 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   name: 'McvRegister',
+  data: () => ({
+    email: '',
+    password: '',
+    username: '',
+  }),
+  computed: {
+    ...mapGetters('authStore', ['isSubmitting']),
+    isSubmit() {
+      return this.isSubmitting;
+    },
+  },
   methods: {
+    ...mapActions('authStore', ['register']),
     onSubmit(evt) {
       console.log('On Submit', evt);
+      this.register({
+        email: this.email,
+        username: this.username,
+        password: this.password,
+      })
+        .then(() => { this.$router.push({ name: 'home' }); });
     },
   },
 };
