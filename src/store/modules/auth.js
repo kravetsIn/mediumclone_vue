@@ -22,6 +22,8 @@ const authStore = {
   getters: {
     isSubmitting: ({ isSubmitting }) => isSubmitting,
     validationErrors: ({ validationErrors }) => validationErrors,
+    currentUser: ({ currentUser }) => currentUser,
+    isLoggedIn: ({ isLoggedIn }) => isLoggedIn,
   },
   mutations: {
     [REGISTER_START](state) {
