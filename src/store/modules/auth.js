@@ -14,6 +14,7 @@ const authStore = {
   },
   getters: {
     isSubmitting: ({ isSubmitting }) => isSubmitting,
+    validationErrors: ({ validationErrors }) => validationErrors,
   },
   mutations: {
     [REGISTER_START](state) {

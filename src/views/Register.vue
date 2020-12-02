@@ -10,7 +10,13 @@
           <p class="text-xs-center">
             <router-link :to="{name: 'login'}">Have an account?</router-link>
           </p>
-          <!-- Validation Errors-->
+
+          <McvValidationErrors
+            v-if="validationErrorsObject"
+            :validationErrors="validationErrorsObject"
+          >
+          </McvValidationErrors>
+
           <form @submit.prevent="onSubmit">
             <fieldset class="form-group">
               <input class="form-control form-control-lg"
@@ -53,18 +59,25 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import McvValidationErrors from '@/components/ValidationErrors.vue';
 
 export default {
   name: 'McvRegister',
+  components: {
+    McvValidationErrors,
+  },
   data: () => ({
     email: '',
     password: '',
     username: '',
   }),
   computed: {
-    ...mapGetters('authStore', ['isSubmitting']),
+    ...mapGetters('authStore', ['isSubmitting', 'validationErrors']),
     isSubmit() {
       return this.isSubmitting;
+    },
+    validationErrorsObject() {
+      return this.validationErrors;
     },
   },
   methods: {
