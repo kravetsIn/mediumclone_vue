@@ -1,6 +1,5 @@
 <template>
   <div class="article-preview">
-    {{ article }}
     <div class="article-meta">
 
       <router-link :to="{name: 'userProfile', params: {slug: article.author.username}}">
