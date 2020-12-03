@@ -3,12 +3,14 @@
     <nav class="navbar navbar-light">
       <div class="container">
 
-        <router-link class="navbar-brand ng-binding" :to="{name: 'home'}">MediumClone</router-link>
+        <router-link class="navbar-brand ng-binding" :to="{name: 'globalFeed'}">
+          MediumClone
+        </router-link>
 
         <ul class="nav navbar-nav pull-xs-right">
 
           <li class="nav-item">
-            <router-link :to="{name: 'home'}" active-class="active" class="nav-link" exact>
+            <router-link :to="{name: 'globalFeed'}" active-class="active" class="nav-link" exact>
               Home
             </router-link>
           </li>
