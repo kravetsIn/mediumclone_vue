@@ -9,12 +9,16 @@ const {
   LOGIN_START,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
+  GET_CURRENT_USER_START,
+  GET_CURRENT_USER_SUCCESS,
+  GET_CURRENT_USER_FAILURE,
 } = mutations;
 
 const authStore = {
   namespaced: true,
   state: {
     isSubmitting: false,
+    isLoading: false,
     currentUser: null,
     validationErrors: null,
     isLoggedIn: null,
@@ -23,7 +27,8 @@ const authStore = {
     isSubmitting: ({ isSubmitting }) => isSubmitting,
     validationErrors: ({ validationErrors }) => validationErrors,
     currentUser: ({ currentUser }) => currentUser,
-    isLoggedIn: ({ isLoggedIn }) => isLoggedIn,
+    isLoggedIn: ({ isLoggedIn }) => Boolean(isLoggedIn),
+    isAnonymous: ({ isLoggedIn }) => (isLoggedIn === false),
   },
   mutations: {
     [REGISTER_START](state) {
@@ -51,6 +56,19 @@ const authStore = {
     [LOGIN_FAILURE](state, payload) {
       state.isSubmitting = false;
       state.validationErrors = payload;
+    },
+    [GET_CURRENT_USER_START](state) {
+      state.isLoading = true;
+    },
+    [GET_CURRENT_USER_SUCCESS](state, payload) {
+      state.isLoading = false;
+      state.currentUser = payload;
+      state.isLoggedIn = true;
+    },
+    [GET_CURRENT_USER_FAILURE](state) {
+      state.isLoading = false;
+      state.isLoggedIn = false;
+      state.currentUser = null;
     },
   },
   actions: {
@@ -85,6 +103,21 @@ const authStore = {
           .catch((result) => {
             const { response: { data: { errors } } } = result;
             commit(LOGIN_FAILURE, errors);
+          });
+      });
+    },
+    getCurrentUser({ commit }) {
+      commit(GET_CURRENT_USER_START);
+
+      return new Promise((resolve) => {
+        authApi.getCurrentUser()
+          .then((response) => {
+            const { data: { user } } = response;
+            commit(GET_CURRENT_USER_SUCCESS, user);
+            resolve();
+          })
+          .catch(() => {
+            commit(GET_CURRENT_USER_FAILURE);
           });
       });
     },

@@ -5,14 +5,15 @@
 
         <router-link class="navbar-brand ng-binding" :to="{name: 'home'}">MediumClone</router-link>
 
-        <template v-if="isLoggedIn">
-          <ul class="nav navbar-nav pull-xs-right">
-            <li class="nav-item">
-              <router-link :to="{name: 'home'}" active-class="active" class="nav-link" exact>
-                Home
-              </router-link>
-            </li>
+        <ul class="nav navbar-nav pull-xs-right">
 
+          <li class="nav-item">
+            <router-link :to="{name: 'home'}" active-class="active" class="nav-link" exact>
+              Home
+            </router-link>
+          </li>
+
+          <template v-if="isLoggedIn">
             <li class="nav-item">
               <router-link :to="{name: 'createArticle'}" active-class="active" class="nav-link">
                 <i class="ion-compose"></i>&nbsp;New Article
@@ -34,16 +35,9 @@
                 &nbsp;{{ currentUser.username }}
               </router-link>
             </li>
-          </ul>
-        </template>
-        <template v-else>
-          <ul class="nav navbar-nav pull-xs-right">
-            <li class="nav-item">
-              <router-link :to="{name: 'home'}" class="nav-link" active-class="active" exact>
-                Home
-              </router-link>
-            </li>
+          </template>
 
+          <template v-if="isAnonymous">
             <li class="nav-item">
               <router-link :to="{name: 'login'}" class="nav-link" active-class="active">
                 Sign in
@@ -55,8 +49,9 @@
                 Sign up
               </router-link>
             </li>
-          </ul>
-        </template>
+          </template>
+
+        </ul>
 
       </div>
     </nav>
@@ -69,7 +64,7 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'McvHeader',
   computed: {
-    ...mapGetters('authStore', ['isLoggedIn', 'currentUser']),
+    ...mapGetters('authStore', ['isLoggedIn', 'currentUser', 'isAnonymous']),
   },
 };
 </script>
