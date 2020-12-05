@@ -4,7 +4,11 @@
     <div v-if="error">Something bad happened</div>
     <div v-if="feed">
       <McvFeedItem v-for="(article, index) in feed" :key="index" :article="article"></McvFeedItem>
-      <McvPagination :total="total" :limit="limit" :currentPage="currentPage" :url="url">
+      <McvPagination :total="articlesCount"
+                     :limit="limit"
+                     :currentPage="currentPage"
+                     :url="baseUrl"
+      >
       </McvPagination>
     </div>
   </div>
@@ -14,6 +18,10 @@
 import { mapActions, mapGetters } from 'vuex';
 import McvFeedItem from '@/components/Feed/FeedItem.vue';
 import McvPagination from '@/components/Pagination.vue';
+import config from '@/config/index';
+import { stringify, parseUrl } from 'query-string';
+
+const { paginationLimit } = config;
 
 export default {
   name: 'McvFeed',
@@ -28,10 +36,7 @@ export default {
     },
   },
   data: () => ({
-    total: 500,
-    limit: 10,
-    currentPage: 5,
-    url: '/',
+    limit: paginationLimit,
   }),
   computed: {
     ...mapGetters('feedStore', ['data', 'isLoading', 'error']),
@@ -40,13 +45,41 @@ export default {
       const { articles } = this.data;
       return articles;
     },
+    articlesCount() {
+      if (!this.data) return null;
+      const { articlesCount } = this.data;
+      return articlesCount;
+    },
+    currentPage() {
+      return Number(this.$route.query.page || 1);
+    },
+    baseUrl() {
+      return this.$route.path;
+    },
+    offset() {
+      return this.currentPage * this.limit - this.limit;
+    },
+  },
+  watch: {
+    currentPage() {
+      this.fetchFeed();
+    },
+  },
+  mounted() {
+    this.fetchFeed();
   },
   methods: {
     ...mapActions('feedStore', ['getFeed']),
-
-  },
-  mounted() {
-    this.getFeed({ apiUrl: this.apiUrl });
+    fetchFeed() {
+      const parsedUrl = parseUrl(this.apiUrl);
+      const stringifiedParams = stringify({
+        limit: this.limit,
+        offset: this.offset,
+        ...parsedUrl.query,
+      });
+      const apiUrlWidthParams = `${parsedUrl.url}?${stringifiedParams}`;
+      this.getFeed({ apiUrl: apiUrlWidthParams });
+    },
   },
 };
 </script>
