@@ -17,7 +17,7 @@
         </div>
 
         <div class="col-md-3">
-          Popular Tags
+          <McvPopularTags></McvPopularTags>
         </div>
 
       </div>
@@ -27,11 +27,15 @@
 
 <script>
 import McvFeed from '@/components/Feed/Feed.vue';
+import McvPopularTags from '@/components/PopularTags.vue';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'McvGlobalFeed',
-  components: { McvFeed },
+  components: {
+    McvFeed,
+    McvPopularTags,
+  },
   data: () => ({
     apiUrl: '/articles',
   }),
