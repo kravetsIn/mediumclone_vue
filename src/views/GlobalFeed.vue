@@ -1,13 +1,7 @@
 <template>
   <div class="home-page ng-scope">
 
-    <!-- Splash banner that only shows when not logged in -->
-    <div v-if="!isAnonymous" class="banner">
-      <div class="container">
-        <h1 class="logo-font ng-binding">MediumClone</h1>
-        <p>A place to share your knowledge.</p>
-      </div>
-    </div>
+    <McvBanner></McvBanner>
 
     <div class="container page">
       <div class="row">
@@ -28,11 +22,14 @@
 <script>
 import McvFeed from '@/components/Feed/Feed.vue';
 import McvPopularTags from '@/components/PopularTags.vue';
+import McvBanner from '@/components/Banner.vue';
+
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'McvGlobalFeed',
   components: {
+    McvBanner,
     McvFeed,
     McvPopularTags,
   },

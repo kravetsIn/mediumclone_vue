@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div v-if="isLoading">Loading...</div>
-    <div v-if="error">Something bad happened</div>
+    <McvLoading v-if="isLoading"></McvLoading>
+    <McvErrorMessage v-if="error"></McvErrorMessage>
+
     <div v-if="feed">
       <McvFeedItem v-for="(article, index) in feed" :key="index" :article="article"></McvFeedItem>
       <McvPagination :total="articlesCount"
@@ -20,12 +21,16 @@ import McvFeedItem from '@/components/Feed/FeedItem.vue';
 import McvPagination from '@/components/Pagination.vue';
 import config from '@/config/index';
 import { stringify, parseUrl } from 'query-string';
+import McvLoading from '@/components/Loading.vue';
+import McvErrorMessage from '@/components/ErrorMessage.vue';
 
 const { paginationLimit } = config;
 
 export default {
   name: 'McvFeed',
   components: {
+    McvErrorMessage,
+    McvLoading,
     McvFeedItem,
     McvPagination,
   },
