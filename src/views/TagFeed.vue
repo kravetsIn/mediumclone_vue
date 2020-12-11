@@ -7,6 +7,7 @@
       <div class="row">
 
         <div class="col-md-9">
+          <McvFeedToggler :tagName="tagName"></McvFeedToggler>
           <McvFeed :apiUrl="apiUrl"></McvFeed>
         </div>
 
@@ -23,21 +24,25 @@
 import McvFeed from '@/components/Feed/Feed.vue';
 import McvPopularTags from '@/components/PopularTags.vue';
 import McvBanner from '@/components/Banner.vue';
+import McvFeedToggler from '@/components/FeedToggler.vue';
 
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'McvYourFeed',
   components: {
+    McvFeedToggler,
     McvBanner,
     McvFeed,
     McvPopularTags,
   },
   computed: {
     ...mapGetters('authStore', ['isAnonymous']),
+    tagName() {
+      return this.$route.params.slug;
+    },
     apiUrl() {
-      const tagName = this.$route.params.slug;
-      return `/articles?tag=${tagName}`;
+      return `/articles?tag=${this.tagName}`;
     },
   },
 };
