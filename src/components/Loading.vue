@@ -1,5 +1,5 @@
 <template>
-  <div>Loadings...</div>
+  <div class="loading">Loadings...</div>
 </template>
 
 <script>
@@ -9,5 +9,8 @@ export default {
 </script>
 
 <style scoped>
-
+.loading {
+  width: 100%;
+  display: inline-block;
+  }
 </style>

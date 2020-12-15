@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import authStore from '@/store/modules/auth';
 import feedStore from '@/store/modules/feed';
 import tagsStore from '@/store/modules/popularTags';
+import articleStore from '@/store/modules/article';
 
 Vue.use(Vuex);
 
@@ -14,5 +15,6 @@ export default new Vuex.Store({
     authStore,
     feedStore,
     tagsStore,
+    articleStore,
   },
 });
