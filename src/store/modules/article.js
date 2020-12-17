@@ -5,6 +5,9 @@ const {
   GET_ARTICLE_START,
   GET_ARTICLE_SUCCESS,
   GET_ARTICLE_FAILURE,
+  DELETE_ARTICLE_START,
+  DELETE_ARTICLE_SUCCESS,
+  DELETE_ARTICLE_FAILURE,
 } = mutations;
 
 const articleStore = {
@@ -31,6 +34,9 @@ const articleStore = {
     [GET_ARTICLE_FAILURE](state) {
       state.isLoading = false;
     },
+    [DELETE_ARTICLE_START]() {},
+    [DELETE_ARTICLE_SUCCESS]() {},
+    [DELETE_ARTICLE_FAILURE]() {},
   },
   actions: {
     getArticle({ commit }, { slug }) {
@@ -43,6 +49,20 @@ const articleStore = {
           })
           .catch((err) => {
             commit(GET_ARTICLE_FAILURE);
+            console.log('ERROR: Get Article Error', err);
+          });
+      });
+    },
+    deleteArticle({ commit }, { slug }) {
+      commit(DELETE_ARTICLE_START);
+      return new Promise((resolve) => {
+        feedApi.deleteArticle(slug)
+          .then(() => {
+            commit(DELETE_ARTICLE_SUCCESS);
+            resolve();
+          })
+          .catch((err) => {
+            commit(DELETE_ARTICLE_FAILURE);
             console.log('ERROR: Get Article Error', err);
           });
       });
