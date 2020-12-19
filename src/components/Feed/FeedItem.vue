@@ -24,14 +24,17 @@
       <h1>{{ article.title }}</h1>
       <p>{{ article.description }}</p>
       <span>Read more...</span>
-      TAG LIST
+      <McvTagList v-if="article.tagList" :tags="article.tagList"></McvTagList>
     </router-link>
   </div>
 </template>
 
 <script>
+import McvTagList from '@/components/TagList.vue';
+
 export default {
   name: 'McvFeedItem',
+  components: { McvTagList },
   props: {
     article: {
       type: Object,
