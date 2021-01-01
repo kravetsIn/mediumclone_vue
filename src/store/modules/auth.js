@@ -12,6 +12,10 @@ const {
   GET_CURRENT_USER_START,
   GET_CURRENT_USER_SUCCESS,
   GET_CURRENT_USER_FAILURE,
+  UPDATE_CURRENT_USER_START,
+  UPDATE_CURRENT_USER_SUCCESS,
+  UPDATE_CURRENT_USER_FAILURE,
+  LOGOUT,
 } = mutations;
 
 const authStore = {
@@ -70,6 +74,17 @@ const authStore = {
       state.isLoggedIn = false;
       state.currentUser = null;
     },
+    [UPDATE_CURRENT_USER_START]() {
+    },
+    [UPDATE_CURRENT_USER_SUCCESS](state, payload) {
+      state.currentUser = payload;
+    },
+    [UPDATE_CURRENT_USER_FAILURE]() {
+    },
+    [LOGOUT](state) {
+      state.currentUser = null;
+      state.isLoggedIn = false;
+    },
   },
   actions: {
     register({ commit }, credentials) {
@@ -119,6 +134,27 @@ const authStore = {
           .catch(() => {
             commit(GET_CURRENT_USER_FAILURE);
           });
+      });
+    },
+    updateCurrentUser({ commit }, { currentUserInput }) {
+      commit(UPDATE_CURRENT_USER_START, null, { root: true });
+
+      return new Promise((resolve) => {
+        authApi.updateCurrentUser(currentUserInput)
+          .then((user) => {
+            commit(UPDATE_CURRENT_USER_SUCCESS, user, { root: true });
+            resolve(user);
+          })
+          .catch((result) => {
+            commit(UPDATE_CURRENT_USER_FAILURE, result.response.data.errors, { root: true });
+          });
+      });
+    },
+    logout({ commit }) {
+      return new Promise((resolve) => {
+        setItem('accessToken', '');
+        commit(LOGOUT);
+        resolve();
       });
     },
   },
