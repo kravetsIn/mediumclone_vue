@@ -16,7 +16,11 @@
       </div>
 
       <div class="pull-xs-right">
-        ADD TO FAVORITS
+        <McvAddToFavorite
+          :isFavorited="article.favorited"
+          :articleSlug="article.slug"
+          :favoritesCount="article.favoritesCount"
+        />
       </div>
     </div>
 
@@ -31,10 +35,14 @@
 
 <script>
 import McvTagList from '@/components/TagList.vue';
+import McvAddToFavorite from '@/components/AddToFavorite.vue';
 
 export default {
   name: 'McvFeedItem',
-  components: { McvTagList },
+  components: {
+    McvTagList,
+    McvAddToFavorite,
+  },
   props: {
     article: {
       type: Object,
